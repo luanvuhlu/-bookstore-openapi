@@ -27,8 +27,8 @@ def main():
             specs = {
                 'file': file_specs,
                 'project_name': project_name,
-                'groupId': '.'.join(file_specs.split("/")[2:-1]) + '.' + project_name,
-                'base_package': '.'.join(file_specs.split("/")[2:-1]) + '.' + project_name,
+                'groupId': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
+                'base_package': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
                 'artifactId': project_name + '-api',
                 'out': DEFAULT_OUT + project_name
             }

@@ -29,10 +29,10 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
-    - name: Deploy
+    - name: Generate projects
       run: |
         python scripts/deploy.py
-    - name: Publish package
-      run: for i in out/*/pom.xml;do mvn deploy -f "$i" -DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi ; done
+    - name: Publish packages
+      run: for i in out/*/pom.xml;do mvn --batch-mode deploy -f "$i" -DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi ; done
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
