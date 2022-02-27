@@ -59,6 +59,7 @@ def run_deploy(specs):
         ])
     subprocess.call([
         "mvn",
+        "-DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi"
         "deploy",
         # "clean",
         # "install",
