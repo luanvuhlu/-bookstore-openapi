@@ -57,15 +57,15 @@ def run_deploy(specs):
         specs['out'],
         "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",library=resttemplate,modelPackage="+specs['base_package']+".client.model,apiPackage="+specs['base_package']+".client.api,artifactVersion=1.0.0,java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
         ])
-    subprocess.call([
-        "mvn",
-        "deploy",
-        "-DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi",
-        # "clean",
-        # "install",
-        "-f",
-        specs['out'] + '/pom.xml'  
-    ])
+    # subprocess.call([
+    #     "mvn",
+    #     "deploy",
+    #     "-DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi",
+    #     # "clean",
+    #     # "install",
+    #     "-f",
+    #     specs['out'] + '/pom.xml'  
+    # ])
 
 if __name__ == "__main__":
     main()
