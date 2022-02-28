@@ -15,7 +15,8 @@ paths:
         required: true
     get:
       summary: Get product detail
-      tags: []
+      tags:
+        - product
       responses:
         '200':
           description: ''
@@ -29,7 +30,8 @@ paths:
   /products:
     get:
       summary: List of products
-      tags: []
+      tags:
+        - product
       responses:
         '200':
           description: OK
