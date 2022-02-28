@@ -30,7 +30,8 @@ def main():
                 'groupId': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
                 'base_package': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
                 'artifactId': project_name + '-api',
-                'out': DEFAULT_OUT + project_name
+                'out': DEFAULT_OUT + project_name,
+                'version': get_version(file_specs)
             }
             run_deploy(specs)
 
@@ -55,7 +56,7 @@ def run_deploy(specs):
         "java",
         "-o",
         specs['out'],
-        "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",library=resttemplate,modelPackage="+specs['base_package']+".client.model,apiPackage="+specs['base_package']+".client.api,artifactVersion=1.0.0,java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
+        "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",library=resttemplate,modelPackage="+specs['base_package']+".client.model,apiPackage="+specs['base_package']+".client.api,artifactVersion="+specs['version']+",java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
         ])
     # subprocess.call([
     #     "mvn",
