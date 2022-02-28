@@ -126,15 +126,16 @@ components:
       type: object
       properties:
         totalPages:
-          type: string
+          type: integer
         totalElements:
-          type: string
+          type: integer
+          format: int64
         size:
-          type: string
+          type: integer
         page:
-          type: string
+          type: integer
         numberOfElements:
-          type: string
+          type: integer
     ProductsList:
       title: ProductList
       type: object
