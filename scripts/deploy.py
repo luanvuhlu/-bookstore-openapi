@@ -18,22 +18,31 @@ DEFAULT_OUT = "out/"
 FIND_FOLDER = "api/"
 CLI_FILE = "scripts/openapi-generator-cli.jar"
 
+
 def main():
-    os.makedirs(DEFAULT_OUT)
+    os.makedirs(DEFAULT_OUT, exist_ok = True)
     for root, dirnames, filenames in os.walk(FIND_FOLDER):
         for filename in fnmatch.filter(filenames, '*.' + FILE_EXT):
             project_name = filename[:-len(FILE_EXT)-1]
             file_specs = os.path.join(root, filename)
-            specs = {
+            api_specs = {
                 'file': file_specs,
                 'project_name': project_name,
                 'groupId': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
                 'base_package': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
                 'artifactId': project_name + '-api',
-                'out': DEFAULT_OUT + project_name,
-                'version': get_version(file_specs)
+                'out': DEFAULT_OUT + project_name + '-api',
+                'version': get_version(file_specs),
+                'type': 'api'
             }
-            run_deploy(specs)
+            api_specs['root_package'] = api_specs['base_package'] + ".specs"
+            run_deploy(api_specs)
+            client_specs = api_specs.copy()
+            client_specs['artifactId'] = project_name + '-client'
+            client_specs['out'] = DEFAULT_OUT + project_name + '-client'
+            client_specs['type'] = 'client'
+            client_specs['root_package'] = api_specs['base_package'] + ".client"
+            run_deploy(client_specs)
 
 
 def get_version(file_specs):
@@ -45,6 +54,11 @@ def get_version(file_specs):
 
 
 def run_deploy(specs):
+    additional = "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",modelPackage="+specs['root_package']+".model,apiPackage="+specs['root_package']+".api,artifactVersion="+specs['version']+",java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
+    if specs['type'] == 'client':
+        additional += ",library=resttemplate"
+    if specs['type'] == 'api':
+        additional += ",interfaceOnly=true,useSwaggerUI=true"
     subprocess.call([
         "java", 
         "-jar",
@@ -53,20 +67,12 @@ def run_deploy(specs):
         "-i",
         specs['file'],
         "-g",
-        "java",
+        "java" if specs['type'] == 'client' else "spring",
         "-o",
         specs['out'],
-        "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",library=resttemplate,modelPackage="+specs['base_package']+".client.model,apiPackage="+specs['base_package']+".client.api,artifactVersion="+specs['version']+",java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
+        additional
         ])
-    # subprocess.call([
-    #     "mvn",
-    #     "deploy",
-    #     "-DaltDeploymentRepository=repositoryId::default::https://maven.pkg.github.com/luanvuhlu/bookstore-openapi",
-    #     # "clean",
-    #     # "install",
-    #     "-f",
-    #     specs['out'] + '/pom.xml'  
-    # ])
+
 
 if __name__ == "__main__":
     main()
