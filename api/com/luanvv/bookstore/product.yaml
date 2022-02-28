@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.0.2
+  version: 1.1.0
   description: ''
 servers:
   - url: 'http://localhost:3000'
@@ -15,8 +15,6 @@ paths:
         required: true
     get:
       summary: Get product detail
-      tags:
-        - product
       responses:
         '200':
           description: ''
@@ -24,9 +22,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
-              examples: {}
       operationId: getProduct
       description: ''
+      tags:
+        - product
+    delete:
+      summary: ''
+      operationId: deleteProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+    post:
+      summary: ''
+      operationId: postProduct
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResponse'
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookRequest'
   /products:
     get:
       summary: List of products
@@ -42,6 +67,18 @@ paths:
                 items:
                   $ref: '#/components/schemas/Book'
       operationId: getProducts
+      parameters:
+        - schema:
+            type: integer
+            format: int32
+          in: query
+          name: page
+        - schema:
+            type: integer
+            format: int32
+            default: 10
+          in: query
+          name: size
 components:
   schemas:
     Book:
@@ -60,4 +97,30 @@ components:
           type: integer
         publisher:
           type: string
+    BookRequest:
+      title: BookRequest
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        genre:
+          type: string
+        height:
+          type: integer
+        publisher:
+          type: string
+    GenericResponse:
+      title: GenericResponse
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        data:
+          type: object
   responses: {}
