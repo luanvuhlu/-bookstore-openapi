@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Product API
-  version: 1.1.0
+  version: 1.1.1
   description: ''
 servers:
   - url: 'http://localhost:3000'
@@ -63,9 +63,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Book'
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+                  meta:
+                    $ref: '#/components/schemas/MetaResponse'
       operationId: getProducts
       parameters:
         - schema:
@@ -123,4 +128,18 @@ components:
           type: string
         data:
           type: object
+    MetaResponse:
+      title: MetaResponse
+      type: object
+      properties:
+        totalPages:
+          type: string
+        totalElements:
+          type: string
+        size:
+          type: string
+        page:
+          type: string
+        numberOfElements:
+          type: string
   responses: {}
