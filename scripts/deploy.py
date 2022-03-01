@@ -54,7 +54,7 @@ def get_version(file_specs):
 
 
 def run_deploy(specs):
-    additional = "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",modelPackage="+specs['root_package']+".model,apiPackage="+specs['root_package']+".api,artifactVersion="+specs['version']+",java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']
+    additional = "--additional-properties=groupId="+specs['groupId']+",artifactId="+specs['artifactId']+",artifactUrl="+ARTIFACT_URL+",modelPackage="+specs['root_package']+".model,apiPackage="+specs['root_package']+".api,artifactVersion="+specs['version']+",java8=true,developerEmail="+DEVELOPER['mail']+",developerName="+DEVELOPER['name']+",dateLibrary=java8-localdatetime"
     if specs['type'] == 'client':
         additional += ",library=resttemplate"
     if specs['type'] == 'api':

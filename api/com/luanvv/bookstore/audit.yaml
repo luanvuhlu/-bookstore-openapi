@@ -8,7 +8,7 @@ servers:
 paths:
   /internal/v1/publish:
     post:
-      summary: ''
+      summary: Publish audit message
       operationId: post-internal-v1-publish
       requestBody:
         content:
