@@ -9,7 +9,7 @@ paths:
   /internal/v1/publish:
     post:
       summary: Publish audit message
-      operationId: post-internal-v1-publish
+      operationId: publish
       requestBody:
         content:
           application/json:
