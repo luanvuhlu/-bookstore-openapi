@@ -14,8 +14,8 @@ DEVELOPER = {
     'name': 'luanvu'
 }
 DEFAULT_VESION = "1.0.0"
-DEFAULT_OUT = "out/"
-FIND_FOLDER = "api/"
+DEFAULT_OUT = "out" + os.sep
+FIND_FOLDER = "api" + os.sep
 CLI_FILE = "scripts/openapi-generator-cli.jar"
 
 
@@ -28,8 +28,8 @@ def main():
             api_specs = {
                 'file': file_specs,
                 'project_name': project_name,
-                'groupId': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
-                'base_package': '.'.join(file_specs.split("/")[1:-1]) + '.' + project_name,
+                'groupId': '.'.join(file_specs.split(os.sep)[1:-1]) + '.' + project_name,
+                'base_package': '.'.join(file_specs.split(os.sep)[1:-1]) + '.' + project_name,
                 'artifactId': project_name + '-api',
                 'out': DEFAULT_OUT + project_name + '-api',
                 'version': get_version(file_specs),
@@ -59,8 +59,8 @@ def run_deploy(specs):
         additional += ",library=resttemplate"
     if specs['type'] == 'api':
         additional += ",interfaceOnly=true,useSwaggerUI=true"
-    subprocess.call([
-        "java", 
+    subprocess.check_call([
+        "java",
         "-jar",
         CLI_FILE,
         "generate",
@@ -72,6 +72,16 @@ def run_deploy(specs):
         specs['out'],
         additional
         ])
+    subprocess.check_call([
+        "mvn",
+        "install",
+        "-D",
+        "maven.javadoc.skip=true",
+        "-D",
+        "maven.test.skip=true",
+        "-f",
+        specs['out']
+    ], shell=True)
 
 
 if __name__ == "__main__":
